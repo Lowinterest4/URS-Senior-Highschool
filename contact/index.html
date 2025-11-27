@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - Senior High School</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .smooth-scroll {
+      scroll-behavior: smooth;
+    }
+
+    /* Navigation Styles */
+    #main-nav {
+      background-color: #1e40af;
+      padding: 1.25rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      border-bottom: 1px solid #1e3a8a;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo-img {
+      width: 55px;
+      height: 55px;
+      object-fit: contain;
+      flex-shrink: 0;
+      border-radius: 8px;
+      background-color: #f8fafc;
+      border: 2px solid #e2e8f0;
+    }
+
+    #school-name {
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    #hamburger-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      z-index: 60;
+    }
+
+    .hamburger-line {
+      display: block;
+      width: 30px;
+      height: 2.5px;
+      background-color: #ffffff;
+      transition: all 0.3s;
+      border-radius: 2px;
+    }
+
+    #mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 320px;
+      height: 100%;
+      background-color: #ffffff;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+      transition: right 0.3s ease;
+      padding: 6rem 2rem 2rem;
+      z-index: 55;
+      border-left: 3px solid #1e40af;
+    }
+
+    .menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .nav-link {
+      color: #1e293b;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.125rem;
+      transition: all 0.2s;
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      border-left: 3px solid transparent;
+    }
+
+    .nav-link:hover {
+      background-color: #f8fafc;
+      color: #1e40af;
+      border-left-color: #1e40af;
+    }
+
+    #menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      display: none;
+      z-index: 54;
+    }
+
+    /* Hero Section Styles */
+    #hero {
+      padding: 5rem 2rem 4rem;
+      background-color: #ffffff;
+      text-align: center;
+    }
+
+    .hero-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    #page-title {
+      color: #0f172a;
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+    }
+
+    #page-subtitle {
+      color: #475569;
+      font-size: 1.25rem;
+      line-height: 1.7;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 400;
+    }
+
+    /* Contact Info Section */
+    #contact-info {
+      padding: 5rem 2rem;
+      background-color: #f8fafc;
+    }
+
+    .contact-info-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    .contact-card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 2.5rem;
+      text-align: center;
+      border: 2px solid #e2e8f0;
+      border-left: 4px solid #d4af37;
+      transition: all 0.3s;
+    }
+
+    .contact-card:hover {
+      border-color: #d4af37;
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .contact-icon {
+      background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+      width: 4rem;
+      height: 4rem;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+    }
+    
+    .contact-icon svg {
+      width: 28px;
+      height: 28px;
+      fill: #1e40af;
+    }
+
+    .contact-heading {
+      color: #0f172a;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-size: 1.25rem;
+    }
+
+    .contact-text {
+      color: #475569;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+    }
+
+    /* Form Section */
+    #form-section {
+      padding: 5rem 2rem;
+      background-color: #ffffff;
+    }
+
+    .form-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    #form-title {
+      color: #0f172a;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    #form-description {
+      color: #475569;
+      font-size: 1.125rem;
+      line-height: 1.7;
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.75rem;
+    }
+
+    .form-label {
+      display: block;
+      color: #0f172a;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .form-input,
+    .form-textarea,
+    .form-select {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      color: #1e293b;
+      transition: all 0.2s;
+      background-color: #ffffff;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: #d4af37;
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    }
+
+    .form-textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+      color: #ffffff;
+      padding: 1.25rem 3rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .success-message {
+      background-color: #d1fae5;
+      border: 2px solid #6ee7b7;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: none;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .success-message.show {
+      display: flex;
+    }
+
+    .success-message-icon {
+      width: 24px;
+      height: 24px;
+      fill: #059669;
+      flex-shrink: 0;
+    }
+
+    .success-message-text {
+      color: #065f46;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .error-message {
+      background-color: #fee2e2;
+      border: 2px solid #fca5a5;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: none;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .error-message.show {
+      display: flex;
+    }
+
+    .error-message-text {
+      color: #991b1b;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    /* Footer Styles */
+    #footer {
+      background-color: #1e40af;
+      padding: 4rem 2rem 2rem;
+      box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
+      position: relative;
+    }
+
+    #footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+      pointer-events: none;
+    }
+
+    .footer-container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-links-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-column-title {
+      color: #ffffff;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      font-size: 0.9375rem;
+      letter-spacing: 0.025em;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-link {
+      color: #e2e8f0;
+      text-decoration: none;
+      font-size: 0.9375rem;
+      transition: color 0.2s;
+    }
+
+    .footer-link:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      padding-top: 2rem;
+      text-align: center;
+    }
+
+    .footer-copyright {
+      color: #e2e8f0;
+      font-size: 0.9375rem;
+    }
+
+    @media (max-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-links-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+
+      #page-title {
+        font-size: 2.5rem;
+      }
+
+      #form-title {
+        font-size: 2rem;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="smooth-scroll w-full" style="margin: 0; padding: 0;"><!-- Navigation -->
+  <nav id="main-nav" class="w-full">
+   <div class="nav-container">
+    <div class="logo-section"><img src="placeholder" alt="URS Logo" class="logo-img">
+     <h1 id="school-name">URS Senior Highschool</h1>
+    </div><!-- Hamburger Button --> <button id="hamburger-btn" onclick="toggleMenu()"> <span class="hamburger-line"></span> <span class="hamburger-line"></span> <span class="hamburger-line"></span> </button>
+   </div><!-- Mobile Menu -->
+   <div id="mobile-menu">
+    <div class="menu-links"><a href="../" class="nav-link" onclick="toggleMenu()">Home</a> <a href="about/" class="nav-link" onclick="toggleMenu()">About</a> <a href="admission/" class="nav-link" onclick="toggleMenu()">Admission</a> <a href="programs/" class="nav-link" onclick="toggleMenu()">Programs</a> <a href="faq/" class="nav-link" onclick="toggleMenu()">FAQ</a> <a href="contact/" class="nav-link" onclick="toggleMenu()">Contact</a>
+    </div>
+   </div><!-- Overlay -->
+   <div id="menu-overlay" onclick="toggleMenu()"></div>
+  </nav><!-- Hero Section -->
+  <section id="hero" class="w-full">
+   <div class="hero-container">
+    <h2 id="page-title">Get in Touch</h2>
+    <p id="page-subtitle">Have questions? We're here to help! Reach out to us and we'll get back to you as soon as possible</p>
+   </div>
+  </section><!-- Contact Info Section -->
+  <section id="contact-info" class="w-full">
+   <div class="contact-info-container">
+    <div class="contact-grid"><!-- Address -->
+     <div class="contact-card">
+      <div class="contact-icon">
+       <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z" />
+       </svg>
+      </div>
+      <h3 class="contact-heading">Visit Us</h3>
+      <p id="contact-address" class="contact-text">123 Education Street, Learning City, LC 12345</p>
+     </div><!-- Phone -->
+     <div class="contact-card">
+      <div class="contact-icon">
+       <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z" />
+       </svg>
+      </div>
+      <h3 class="contact-heading">Call Us</h3>
+      <p id="contact-phone" class="contact-text">(555) 123-4567</p>
+     </div><!-- Email -->
+     <div class="contact-card">
+      <div class="contact-icon">
+       <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" />
+       </svg>
+      </div>
+      <h3 class="contact-heading">Email Us</h3>
+      <p id="contact-email" class="contact-text">info@urs-shs.edu</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Form Section -->
+  <section id="form-section" class="w-full">
+   <div class="form-container">
+    <h3 id="form-title">Send Us a Message</h3>
+    <p id="form-description">Fill out the form below and our admissions team will respond to your inquiry within 24 hours</p><!-- Success Message -->
+    <div id="success-message" class="success-message">
+     <svg class="success-message-icon" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z" />
+     </svg><span id="success-message-text" class="success-message-text">Thank you for your message! We'll get back to you soon.</span>
+    </div><!-- Error Message -->
+    <div id="error-message" class="error-message"><span class="error-message-text">There was an error sending your message. Please try again.</span>
+    </div>
+    <form id="contact-form">
+     <div class="form-row">
+      <div class="form-group"><label for="first-name" class="form-label">First Name *</label> <input type="text" id="first-name" name="first_name" class="form-input" required>
+      </div>
+      <div class="form-group"><label for="last-name" class="form-label">Last Name *</label> <input type="text" id="last-name" name="last_name" class="form-input" required>
+      </div>
+     </div>
+     <div class="form-row">
+      <div class="form-group"><label for="email" class="form-label">Email Address *</label> <input type="email" id="email" name="email" class="form-input" required>
+      </div>
+      <div class="form-group"><label for="phone" class="form-label">Phone Number</label> <input type="tel" id="phone" name="phone" class="form-input">
+      </div>
+     </div>
+     <div class="form-group"><label for="inquiry-type" class="form-label">Inquiry Type *</label> <select id="inquiry-type" name="inquiry_type" class="form-select" required> <option value="">Select an option</option> <option value="admissions">Admissions</option> <option value="programs">Programs &amp; Strands</option> <option value="scholarships">Scholarships</option> <option value="general">General Inquiry</option> <option value="other">Other</option> </select>
+     </div>
+     <div class="form-group"><label for="message" class="form-label">Message *</label> <textarea id="message" name="message" class="form-textarea" required></textarea>
+     </div><button type="submit" id="submit-btn" class="submit-btn"> <span id="submit-text">Send Message</span> </button>
+    </form>
+   </div>
+  </section><!-- Footer -->
+  <footer id="footer" class="w-full">
+   <div class="footer-container"><!-- Footer Links -->
+    <div class="footer-links-grid"><!-- Quick Links -->
+     <div>
+      <h5 class="footer-column-title">Quick Links</h5>
+      <div class="footer-links"><a href="#" class="footer-link">Home</a> <a href="#" class="footer-link">About Us</a> <a href="#" class="footer-link">Programs</a> <a href="#" class="footer-link">FAQ</a>
+      </div>
+     </div><!-- Admissions -->
+     <div>
+      <h5 class="footer-column-title">Admissions</h5>
+      <div class="footer-links"><a href="#" class="footer-link">How to Apply</a> <a href="#" class="footer-link">Requirements</a> <a href="#" class="footer-link">Scholarships</a> <a href="#" class="footer-link">Tuition Fees</a>
+      </div>
+     </div><!-- Student Life -->
+     <div>
+      <h5 class="footer-column-title">Student Life</h5>
+      <div class="footer-links"><a href="#" class="footer-link">Clubs &amp; Organizations</a> <a href="#" class="footer-link">Events &amp; Activities</a> <a href="#" class="footer-link">Sports Programs</a> <a href="#" class="footer-link">Student Services</a>
+      </div>
+     </div><!-- Resources -->
+     <div>
+      <h5 class="footer-column-title">Resources</h5>
+      <div class="footer-links"><a href="#" class="footer-link">Academic Calendar</a> <a href="#" class="footer-link">Faculty &amp; Staff</a> <a href="#" class="link">Library</a> <a href="#" class="footer-link">News &amp; Updates</a>
+      </div>
+     </div>
+    </div>
+    <div class="footer-bottom">
+     <p class="footer-copyright">© 2024 URS Senior Highschool. All rights reserved.</p>
+    </div>
+   </div>
+  </footer>
+  <script>
+    // EmailJS Configuration - Leave blank for now
+    const EMAILJS_SERVICE_ID = 'service_b22wmmi';  // You'll add your EmailJS Service ID here
+    const EMAILJS_TEMPLATE_ID = 'template_ai5nnw8'; // You'll add your EmailJS Template ID here
+    const EMAILJS_PUBLIC_KEY = 'vSkS4WZEGJ2v2rWaM';  // You'll add your EmailJS Public Key here
+
+    // Initialize EmailJS (only if keys are provided)
+    if (EMAILJS_PUBLIC_KEY) {
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+    }
+
+    // Hamburger menu toggle
+    function toggleMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      const menuOverlay = document.getElementById('menu-overlay');
+      const hamburgerLines = document.querySelectorAll('.hamburger-line');
+      
+      if (mobileMenu.style.right === '0px') {
+        mobileMenu.style.right = '-100%';
+        menuOverlay.style.display = 'none';
+        hamburgerLines[0].style.transform = 'none';
+        hamburgerLines[1].style.opacity = '1';
+        hamburgerLines[2].style.transform = 'none';
+      } else {
+        mobileMenu.style.right = '0px';
+        menuOverlay.style.display = 'block';
+        hamburgerLines[0].style.transform = 'rotate(45deg) translate(8px, 8px)';
+        hamburgerLines[1].style.opacity = '0';
+        hamburgerLines[2].style.transform = 'rotate(-45deg) translate(8px, -8px)';
+      }
+    }
+
+    // Form submission handler
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const submitBtn = document.getElementById('submit-btn');
+      const submitText = document.getElementById('submit-text');
+      const successMessage = document.getElementById('success-message');
+      const errorMessage = document.getElementById('error-message');
+      
+      // Hide any previous messages
+      successMessage.classList.remove('show');
+      errorMessage.classList.remove('show');
+      
+      // Disable button and show loading state
+      submitBtn.disabled = true;
+      submitText.textContent = 'Sending...';
+
+      // Check if EmailJS is configured
+      if (!EMAILJS_SERVICE_ID || !EMAILJS_TEMPLATE_ID || !EMAILJS_PUBLIC_KEY) {
+        // Simulate success for demo purposes when not configured
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitText.textContent = 'Send Message';
+          successMessage.classList.add('show');
+          document.getElementById('contact-form').reset();
+          
+          // Hide success message after 5 seconds
+          setTimeout(() => {
+            successMessage.classList.remove('show');
+          }, 5000);
+        }, 1000);
+        return;
+      }
+
+      try {
+        // Send email using EmailJS
+        const response = await emailjs.sendForm(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          this
+        );
+        
+        // Show success message
+        successMessage.classList.add('show');
+        
+        // Reset form
+        this.reset();
+        
+        // Hide success message after 5 seconds
+        setTimeout(() => {
+          successMessage.classList.remove('show');
+        }, 5000);
+        
+      } catch (error) {
+        // Show error message
+        errorMessage.classList.add('show');
+        
+        // Hide error message after 5 seconds
+        setTimeout(() => {
+          errorMessage.classList.remove('show');
+        }, 5000);
+      } finally {
+        // Re-enable button
+        submitBtn.disabled = false;
+        submitText.textContent = 'Send Message';
+      }
+    });
+
+    const defaultConfig = {
+      background_color: "#ffffff",
+      secondary_color: "#f8fafc",
+      text_color: "#1e293b",
+      primary_action_color: "#1e40af",
+      secondary_action_color: "#1e40af",
+      font_family: "system-ui, -apple-system, sans-serif",
+      font_size: 16,
+      school_name: "URS Senior Highschool",
+      page_title: "Get in Touch",
+      page_subtitle: "Have questions? We're here to help! Reach out to us and we'll get back to you as soon as possible",
+      contact_address: "123 Education Street, Learning City, LC 12345",
+      contact_phone: "(555) 123-4567",
+      contact_email: "info@urs-shs.edu",
+      form_title: "Send Us a Message",
+      form_description: "Fill out the form below and our admissions team will respond to your inquiry within 24 hours",
+      success_message: "Thank you for your message! We'll get back to you soon."
+    };
+
+    async function onConfigChange(config) {
+      const baseFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = 'system-ui, -apple-system, sans-serif';
+      const customFont = `${baseFont}, ${baseFontStack}`;
+      const baseSize = config.font_size || defaultConfig.font_size;
+
+      // Apply colors
+      const nav = document.getElementById('main-nav');
+      nav.style.backgroundColor = config.primary_action_color || defaultConfig.primary_action_color;
+
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.style.backgroundColor = config.background_color || defaultConfig.background_color;
+
+      const heroSection = document.getElementById('hero');
+      heroSection.style.backgroundColor = config.background_color || defaultConfig.background_color;
+
+      const contactInfo = document.getElementById('contact-info');
+      contactInfo.style.backgroundColor = config.secondary_color || defaultConfig.secondary_color;
+
+      const formSection = document.getElementById('form-section');
+      formSection.style.backgroundColor = config.background_color || defaultConfig.background_color;
+
+      const footer = document.getElementById('footer');
+      footer.style.backgroundColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+
+      // Apply fonts
+      document.getElementById('school-name').style.fontFamily = customFont;
+      document.getElementById('school-name').style.fontSize = `${baseSize * 1.5}px`;
+      
+      document.getElementById('page-title').style.fontFamily = customFont;
+      document.getElementById('page-title').style.fontSize = `${baseSize * 3.5}px`;
+      
+      document.getElementById('page-subtitle').style.fontFamily = customFont;
+      document.getElementById('page-subtitle').style.fontSize = `${baseSize * 1.25}px`;
+
+      document.getElementById('form-title').style.fontFamily = customFont;
+      document.getElementById('form-title').style.fontSize = `${baseSize * 2.5}px`;
+
+      document.getElementById('form-description').style.fontFamily = customFont;
+      document.getElementById('form-description').style.fontSize = `${baseSize * 1.125}px`;
+
+      // Apply text content
+      document.getElementById('school-name').textContent = config.school_name || defaultConfig.school_name;
+      document.getElementById('page-title').textContent = config.page_title || defaultConfig.page_title;
+      document.getElementById('page-subtitle').textContent = config.page_subtitle || defaultConfig.page_subtitle;
+      document.getElementById('contact-address').textContent = config.contact_address || defaultConfig.contact_address;
+      document.getElementById('contact-phone').textContent = config.contact_phone || defaultConfig.contact_phone;
+      document.getElementById('contact-email').textContent = config.contact_email || defaultConfig.contact_email;
+      document.getElementById('form-title').textContent = config.form_title || defaultConfig.form_title;
+      document.getElementById('form-description').textContent = config.form_description || defaultConfig.form_description;
+      document.getElementById('success-message-text').textContent = config.success_message || defaultConfig.success_message;
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => {
+                config.secondary_color = value;
+                window.elementSdk.setConfig({ secondary_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.primary_action_color || defaultConfig.primary_action_color,
+              set: (value) => {
+                config.primary_action_color = value;
+                window.elementSdk.setConfig({ primary_action_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+              set: (value) => {
+                config.secondary_action_color = value;
+                window.elementSdk.setConfig({ secondary_action_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => {
+              config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => {
+              config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["school_name", config.school_name || defaultConfig.school_name],
+          ["page_title", config.page_title || defaultConfig.page_title],
+          ["page_subtitle", config.page_subtitle || defaultConfig.page_subtitle],
+          ["contact_address", config.contact_address || defaultConfig.contact_address],
+          ["contact_phone", config.contact_phone || defaultConfig.contact_phone],
+          ["contact_email", config.contact_email || defaultConfig.contact_email],
+          ["form_title", config.form_title || defaultConfig.form_title],
+          ["form_description", config.form_description || defaultConfig.form_description],
+          ["success_message", config.success_message || defaultConfig.success_message]
+        ])
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a3f7ffac7bee2ec',t:'MTc2NDA1NjQ0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
