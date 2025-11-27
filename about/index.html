@@ -5,373 +5,367 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us - Senior High School</title>
   <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #ffffff;
-      color: #1e40af;
-      width: 100%;
-      height: 100%;
     }
-
-    *, *::before, *::after {
+    
+    * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
 
+    .smooth-scroll {
+      scroll-behavior: smooth;
+    }
+
     /* Navigation Styles */
-    .navbar {
-      position: fixed;
+    #main-nav {
+      background-color: #1e40af;
+      padding: 1.25rem 0;
+      position: sticky;
       top: 0;
-      left: 0;
-      width: 100%;
-      background: #1e40af;
-      padding: 20px 40px;
+      z-index: 50;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+      border-bottom: 1px solid #1e3a8a;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 999;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      gap: 1.5rem;
     }
 
-    .nav-logo {
-      font-size: 24px;
-      font-weight: 700;
-      color: #ffffff;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+    .logo-section {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 1rem;
     }
 
     .logo-img {
-      height: 50px;
-      width: auto;
+      width: 55px;
+      height: 55px;
       object-fit: contain;
+      flex-shrink: 0;
+      border-radius: 8px;
+      background-color: #f8fafc;
+      border: 2px solid #e2e8f0;
     }
 
-    .hamburger {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
+    #school-name {
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    #hamburger-btn {
       background: none;
       border: none;
-      padding: 10px;
-      z-index: 1001;
+      cursor: pointer;
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      z-index: 60;
     }
 
-    .hamburger span {
+    .hamburger-line {
+      display: block;
       width: 30px;
-      height: 3px;
-      background: #ffffff;
-      border-radius: 3px;
-      transition: all 0.3s ease;
+      height: 2.5px;
+      background-color: #ffffff;
+      transition: all 0.3s;
+      border-radius: 2px;
     }
 
-    .hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(8px, 8px);
-    }
-
-    .hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(7px, -7px);
-    }
-
-    .nav-menu {
+    #mobile-menu {
       position: fixed;
       top: 0;
       right: -100%;
-      width: 300px;
+      width: 320px;
       height: 100%;
-      background: #1e40af;
-      padding: 100px 40px 40px;
+      background-color: #ffffff;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.15);
       transition: right 0.3s ease;
-      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+      padding: 6rem 2rem 2rem;
+      z-index: 55;
+      border-left: 3px solid #1e40af;
     }
 
-    .nav-menu.active {
-      right: 0;
+    .menu-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
     }
 
-    .nav-menu ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .nav-menu li {
-      margin-bottom: 30px;
-    }
-
-    .nav-menu a {
-      color: #ffffff;
+    .nav-link {
+      color: #1e293b;
       text-decoration: none;
-      font-size: 20px;
       font-weight: 600;
-      transition: color 0.3s ease;
-      display: block;
-      padding: 10px 0;
+      font-size: 1.125rem;
+      transition: all 0.2s;
+      padding: 1rem 1.25rem;
+      border-radius: 8px;
+      border-left: 3px solid transparent;
     }
 
-    .nav-menu a:hover {
-      color: #d4af37;
+    .nav-link:hover {
+      background-color: #f8fafc;
+      color: #1e40af;
+      border-left-color: #1e40af;
     }
 
-    .nav-menu a.active {
-      color: #d4af37;
-      border-left: 4px solid #d4af37;
-      padding-left: 15px;
-      margin-left: -15px;
-    }
-
-    .nav-overlay {
+    #menu-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-      z-index: 998;
+      background-color: rgba(0,0,0,0.5);
+      display: none;
+      z-index: 54;
     }
 
-    .nav-overlay.active {
-      opacity: 1;
-      visibility: visible;
+    /* Hero Section Styles */
+    #hero {
+      padding: 5rem 2rem 4rem;
+      background-color: #ffffff;
+      text-align: center;
     }
 
-    .page-wrapper {
-      width: 100%;
-      min-height: 100%;
-      padding: 100px 40px 60px;
-      background: #ffffff;
+    .hero-container {
+      max-width: 900px;
+      margin: 0 auto;
     }
 
-    .content-container {
+    #page-title {
+      color: #0f172a;
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+    }
+
+    #page-subtitle {
+      color: #475569;
+      font-size: 1.25rem;
+      line-height: 1.7;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      font-weight: 400;
+    }
+
+    /* Mission & Vision Section */
+    #mission-vision {
+      padding: 5rem 2rem;
+      background-color: #f8fafc;
+    }
+
+    .mission-vision-container {
       max-width: 1200px;
       margin: 0 auto;
     }
 
-    .page-header {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .page-title {
-      font-size: 48px;
-      font-weight: 700;
-      color: #1e40af;
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-
-    .title-underline {
-      width: 120px;
-      height: 4px;
-      background: #d4af37;
-      margin: 20px auto;
-      border-radius: 2px;
-    }
-
-    /* Collapsible Section Styles */
-    .collapsible-section {
-      background: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      margin-bottom: 30px;
-      overflow: hidden;
-      border: 1px solid #e0e0e0;
-      transition: all 0.3s ease;
-    }
-
-    .collapsible-section:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      border-color: #d4af37;
-    }
-
-    .section-header {
-      padding: 30px 40px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #1e40af;
-      color: #ffffff;
-      user-select: none;
-      transition: background 0.3s ease;
-    }
-
-    .section-header:hover {
-      background: #2563eb;
-    }
-
-    .section-header h2 {
-      margin: 0;
-      font-size: 32px;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .section-icon {
-      font-size: 28px;
-    }
-
-    .toggle-icon {
-      font-size: 32px;
-      transition: transform 0.3s ease;
-      color: #d4af37;
-    }
-
-    .toggle-icon.rotated {
-      transform: rotate(180deg);
-    }
-
-    .section-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.5s ease, padding 0.5s ease;
-      padding: 0 40px;
-    }
-
-    .section-content.expanded {
-      max-height: 2000px;
-      padding: 40px;
-    }
-
-    .section-content p {
-      font-size: 18px;
-      line-height: 1.8;
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    .mvg-grid {
+    .mission-vision-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-      padding: 0;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 3rem;
     }
 
-    .mvg-item {
-      background: #f8f9fa;
-      padding: 30px;
-      border-radius: 8px;
-      border-left: 5px solid #d4af37;
+    .mission-card, .vision-card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 3rem;
+      border: 2px solid #e2e8f0;
+      border-left: 4px solid #d4af37;
+      transition: all 0.3s;
     }
 
-    .mvg-item h3 {
-      color: #1e40af;
-      font-size: 24px;
-      margin-bottom: 15px;
+    .mission-card:hover, .vision-card:hover {
+      border-color: #d4af37;
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .card-icon {
+      background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
+      width: 4rem;
+      height: 4rem;
+      border-radius: 12px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
     }
 
-    .mvg-item p {
-      font-size: 16px;
-      margin: 0;
+    .card-icon svg {
+      width: 28px;
+      height: 28px;
+      fill: #1e40af;
     }
 
-    .mvg-item ul {
-      margin: 10px 0 0 0;
-      padding-left: 20px;
+    .card-title {
+      color: #0f172a;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      font-size: 1.75rem;
     }
 
-    .mvg-item li {
-      margin-bottom: 8px;
-      font-size: 16px;
+    .card-text {
+      color: #475569;
+      font-size: 1.0625rem;
+      line-height: 1.7;
+    }
+
+    /* Values Section */
+    #values-section {
+      padding: 5rem 2rem;
+      background-color: #ffffff;
+    }
+
+    .values-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    #values-title {
+      color: #0f172a;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+    }
+
+    .value-card {
+      background-color: #f8fafc;
+      border-radius: 12px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      border: 2px solid #e2e8f0;
+      transition: all 0.3s;
+    }
+
+    .value-card:hover {
+      border-color: #d4af37;
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.15);
+      transform: translateY(-4px);
+      background-color: #ffffff;
+    }
+
+    .value-emoji {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .value-title {
+      color: #0f172a;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      font-size: 1.125rem;
+    }
+
+    .value-description {
+      color: #475569;
+      font-size: 0.9375rem;
       line-height: 1.6;
     }
 
     /* Faculty Section */
-    .faculty-section {
-      margin-top: 60px;
+    #faculty-section {
+      padding: 5rem 2rem;
+      background-color: #f8fafc;
     }
 
-    .section-title {
+    .faculty-container {
+      max-width: 1200px;
+      margin: 0 auto;
       text-align: center;
-      font-size: 40px;
+    }
+
+    #faculty-title {
+      color: #0f172a;
+      font-size: 2.5rem;
       font-weight: 700;
-      color: #1e40af;
-      margin-bottom: 50px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
+      margin-bottom: 3rem;
     }
 
     .faculty-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 35px;
-      margin-bottom: 40px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
     }
 
     .faculty-card {
-      background: #ffffff;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      border: 2px solid #e2e8f0;
+      transition: all 0.3s;
       cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid #e0e0e0;
     }
 
     .faculty-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
       border-color: #d4af37;
+      box-shadow: 0 8px 24px rgba(212, 175, 55, 0.15);
+      transform: translateY(-4px);
     }
 
-    .faculty-image-container {
-      width: 100%;
-      height: 280px;
-      background: #1e40af;
+    .faculty-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 0 auto 1.25rem;
+      box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+      border: 3px solid #ffffff;
       overflow: hidden;
     }
 
-    .faculty-image-container img {
+    .faculty-avatar img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    .faculty-info {
-      padding: 25px;
-      text-align: center;
-    }
-
     .faculty-name {
-      font-size: 22px;
-      font-weight: 700;
-      color: #1e40af;
-      margin-bottom: 8px;
+      color: #0f172a;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      font-size: 1.125rem;
     }
 
     .faculty-position {
-      font-size: 16px;
-      color: #d4af37;
-      font-weight: 600;
-      margin-bottom: 10px;
+      color: #475569;
+      font-size: 0.9375rem;
+      margin-bottom: 0.25rem;
     }
 
     .faculty-department {
-      font-size: 14px;
-      color: #666;
+      color: #64748b;
+      font-size: 0.875rem;
     }
 
     /* Modal Styles */
@@ -381,201 +375,151 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.75);
+      background-color: rgba(0, 0, 0, 0.6);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
-      padding: 20px;
-      animation: fadeIn 0.3s ease;
+      z-index: 100;
+      padding: 2rem;
     }
 
-    .modal-overlay.active {
+    .modal-overlay.show {
       display: flex;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
     .modal-content {
-      background: #ffffff;
+      background-color: #ffffff;
       border-radius: 16px;
-      max-width: 700px;
+      max-width: 600px;
       width: 100%;
       max-height: 90%;
       overflow-y: auto;
-      position: relative;
-      animation: slideUp 0.3s ease;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: modalSlideIn 0.3s ease;
     }
 
-    @keyframes slideUp {
+    @keyframes modalSlideIn {
       from {
-        transform: translateY(50px);
         opacity: 0;
+        transform: translateY(-20px);
       }
       to {
-        transform: translateY(0);
         opacity: 1;
+        transform: translateY(0);
       }
     }
 
     .modal-header {
-      background: #1e40af;
-      padding: 30px;
-      position: relative;
+      padding: 2.5rem 2.5rem 2rem;
+      text-align: center;
+      border-bottom: 2px solid #f1f5f9;
     }
 
-    .close-modal {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #d4af37;
-      color: #ffffff;
-      border: none;
-      width: 40px;
-      height: 40px;
+    .modal-avatar {
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
-      font-size: 24px;
-      cursor: pointer;
+      background: linear-gradient(135deg, #d4af37 0%, #f4d03f 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
-      font-weight: 700;
-    }
-
-    .close-modal:hover {
-      background: #b8941f;
-      transform: rotate(90deg);
-    }
-
-    .modal-image-container {
-      width: 200px;
-      height: 200px;
-      margin: 0 auto 20px;
-      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      box-shadow: 0 6px 16px rgba(212, 175, 55, 0.4);
+      border: 4px solid #ffffff;
       overflow: hidden;
-      border: 5px solid #d4af37;
-      background: #2563eb;
     }
 
-    .modal-image-container img {
+    .modal-avatar img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    .modal-faculty-name {
-      font-size: 32px;
+    .modal-name {
+      color: #0f172a;
+      font-size: 1.75rem;
       font-weight: 700;
-      color: #ffffff;
-      text-align: center;
-      margin: 0;
+      margin-bottom: 0.5rem;
     }
 
-    .modal-faculty-position {
-      font-size: 20px;
-      color: #d4af37;
-      text-align: center;
-      margin-top: 8px;
-      font-weight: 600;
+    .modal-position {
+      color: #475569;
+      font-size: 1.125rem;
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .modal-department {
+      color: #64748b;
+      font-size: 1rem;
     }
 
     .modal-body {
-      padding: 40px;
+      padding: 2rem 2.5rem;
     }
 
     .modal-section {
-      margin-bottom: 30px;
+      margin-bottom: 1.75rem;
     }
 
-    .modal-section h3 {
-      color: #1e40af;
-      font-size: 22px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      border-bottom: 2px solid #d4af37;
-      padding-bottom: 8px;
-    }
-
-    .modal-section p, .modal-section ul {
-      color: #333;
-      font-size: 16px;
-      line-height: 1.8;
-      margin: 0;
-    }
-
-    .modal-section ul {
-      padding-left: 20px;
-      margin-top: 10px;
-    }
-
-    .modal-section li {
-      margin-bottom: 8px;
-    }
-
-    .contact-info {
-      background: #f8f9fa;
-      padding: 20px;
-      border-radius: 8px;
-      border-left: 4px solid #d4af37;
-    }
-
-    .contact-info p {
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .contact-info p:last-child {
+    .modal-section:last-child {
       margin-bottom: 0;
     }
 
-    @media (max-width: 768px) {
-      .page-wrapper {
-        padding: 40px 20px;
-      }
+    .modal-section-title {
+      color: #0f172a;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-      .page-title {
-        font-size: 36px;
-      }
+    .modal-section-title svg {
+      width: 18px;
+      height: 18px;
+      fill: #d4af37;
+    }
 
-      .section-header {
-        padding: 20px 25px;
-      }
+    .modal-section-text {
+      color: #475569;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
 
-      .section-header h2 {
-        font-size: 24px;
-      }
+    .modal-close-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
 
-      .section-content.expanded {
-        padding: 25px;
-      }
+    .modal-close-btn:hover {
+      background-color: #f1f5f9;
+    }
 
-      .faculty-grid {
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 25px;
-      }
+    .modal-close-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: #64748b;
+    }
 
-      .modal-body {
-        padding: 25px;
-      }
-}
     /* Footer Styles */
-    #contact {
+    #footer {
       background-color: #1e40af;
       padding: 4rem 2rem 2rem;
       box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.15);
       position: relative;
     }
 
-    #contact::before {
+    #footer::before {
       content: '';
       position: absolute;
       top: 0;
@@ -589,53 +533,8 @@
     .footer-container {
       position: relative;
       z-index: 1;
-    }
-
-    .footer-container {
       max-width: 1200px;
       margin: 0 auto;
-    }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3rem;
-      margin-bottom: 4rem;
-    }
-
-    .contact-item {
-      text-align: center;
-    }
-
-    .contact-icon {
-      background-color: #ffffff;
-      width: 3.5rem;
-      height: 3.5rem;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.25rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    
-    .contact-icon svg {
-      width: 24px;
-      height: 24px;
-      fill: #1e40af;
-    }
-
-    .contact-heading {
-      color: #ffffff;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-      font-size: 1.125rem;
-    }
-
-    .contact-text {
-      color: #e2e8f0;
-      font-size: 1rem;
-      line-height: 1.6;
     }
 
     .footer-links-grid {
@@ -643,8 +542,6 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 2.5rem;
       margin-bottom: 3rem;
-      padding-top: 2.5rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .footer-column-title {
@@ -683,144 +580,169 @@
       font-size: 0.9375rem;
     }
 
-	
+    @media (max-width: 768px) {
+      .mission-vision-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .values-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .faculty-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+      }
+
+      .footer-links-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+
+      #page-title {
+        font-size: 2.5rem;
+      }
+
+      #values-title, #faculty-title {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .values-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .faculty-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
-  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
  </head>
- <body><!-- Navigation -->
-  <nav class="navbar">
-   <div class="nav-logo"><img src="" alt="School Logo" class="logo-img" onerror="this.style.display='none';"> <span>Senior High School</span>
-   </div><button class="hamburger" id="hamburger" onclick="toggleNav()"> <span></span> <span></span> <span></span> </button>
-  </nav>
-  <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
-  <div class="nav-menu" id="navMenu">
-   <ul>
-    <li><a href="../">Home</a></li>
-    <li><a href="about/" class="active">About</a></li>
-	<li><a href="admission/">Admission</a></li>
-    <li><a href="programs/">Programs</a></li>
-    <li><a href="faq/">FAQ</a></li>
-    <li><a href="contact/">Contact</a></li>
-   </ul>
-  </div>
-  <div class="page-wrapper">
-   <div class="content-container">
-    <header class="page-header">
-     <h1 class="page-title" id="pageTitle">About Us</h1>
-     <div class="title-underline"></div>
-    </header><!-- History Section -->
-    <section class="collapsible-section">
-     <div class="section-header" onclick="toggleSection('history')">
-      <h2 id="historyTitle"><span class="section-icon">📚</span>Our History</h2><span class="toggle-icon" id="history-toggle">▼</span>
-     </div>
-     <div class="section-content" id="history-content">
-      <p>Founded in 1952, our senior high school has been a cornerstone of academic excellence and community development for over seven decades. What began as a small institution with just 150 students and 12 dedicated teachers has grown into a thriving educational center serving over 2,000 students annually.</p>
-      <p>Throughout the years, we have maintained our commitment to providing quality education while adapting to the evolving needs of our students and society. Our campus has expanded significantly, now featuring state-of-the-art science laboratories, a modern library with over 50,000 volumes, comprehensive sports facilities, and technology-integrated classrooms.</p>
-      <p>We have produced countless graduates who have gone on to become leaders in various fields including medicine, engineering, education, business, and public service. Our alumni network spans the globe, and many return to contribute to the continued growth and success of their alma mater.</p>
-      <p>The school has received numerous accolades over the years, including recognition for academic excellence, sports achievements, and community engagement. We remain dedicated to our founding principles of integrity, excellence, and service while embracing innovation and progress.</p>
-     </div>
-    </section><!-- Mission, Vision, Goals Section -->
-    <section class="collapsible-section">
-     <div class="section-header" onclick="toggleSection('mvg')">
-      <h2 id="mvgTitle"><span class="section-icon">🎯</span>Mission, Vision &amp; Goals</h2><span class="toggle-icon" id="mvg-toggle">▼</span>
-     </div>
-     <div class="section-content" id="mvg-content">
-      <div class="mvg-grid">
-       <div class="mvg-item">
-        <h3 id="missionTitle">🎓 Our Mission</h3>
-        <p>To provide a comprehensive, high-quality education that empowers students with the knowledge, skills, and values necessary to become responsible, productive, and compassionate members of a global society.</p>
-       </div>
-       <div class="mvg-item">
-        <h3 id="visionTitle">🌟 Our Vision</h3>
-        <p>To be a leading educational institution recognized for academic excellence, innovative teaching methodologies, and the holistic development of students who will shape a better future for our community and the world.</p>
-       </div>
-       <div class="mvg-item">
-        <h3 id="goalsTitle">🏆 Our Goals</h3>
-        <ul>
-         <li>Foster critical thinking and problem-solving skills</li>
-         <li>Promote academic excellence across all disciplines</li>
-         <li>Develop strong character and ethical values</li>
-         <li>Encourage creativity and innovation</li>
-         <li>Build a supportive and inclusive community</li>
-         <li>Prepare students for higher education and career success</li>
-        </ul>
-       </div>
-      </div>
-     </div>
-    </section><!-- Faculty Section -->
-    <section class="faculty-section">
-     <h2 class="section-title" id="facultyTitle">Meet Our Faculty</h2>
-     <div class="faculty-grid" id="facultyGrid"></div>
-    </section>
+ <body class="smooth-scroll w-full" style="margin: 0; padding: 0;"><!-- Navigation -->
+  <nav id="main-nav" class="w-full">
+   <div class="nav-container">
+    <div class="logo-section"><img src="placeholder" alt="URS Logo" class="logo-img">
+     <h1 id="school-name">URS Senior Highschool</h1>
+    </div><!-- Hamburger Button --> <button id="hamburger-btn" onclick="toggleMenu()"> <span class="hamburger-line"></span> <span class="hamburger-line"></span> <span class="hamburger-line"></span> </button>
+   </div><!-- Mobile Menu -->
+   <div id="mobile-menu">
+    <div class="menu-links"><a href="#hero" class="nav-link" onclick="toggleMenu()">Home</a> <a href="#mission-vision" class="nav-link" onclick="toggleMenu()">About</a> <a href="#admission" class="nav-link" onclick="toggleMenu()">Admission</a> <a href="#programs" class="nav-link" onclick="toggleMenu()">Programs</a> <a href="#faq" class="nav-link" onclick="toggleMenu()">FAQ</a> <a href="#contact" class="nav-link" onclick="toggleMenu()">Contact</a>
+    </div>
+   </div><!-- Overlay -->
+   <div id="menu-overlay" onclick="toggleMenu()"></div>
+  </nav><!-- Hero Section -->
+  <section id="hero" class="w-full">
+   <div class="hero-container">
+    <h2 id="page-title">About Our School</h2>
+    <p id="page-subtitle">Building tomorrow's leaders through excellence in education, innovation, and character development</p>
    </div>
-  </div><!-- Modal -->
-  <div class="modal-overlay" id="modalOverlay" onclick="closeModalOnOverlay(event)">
-   <div class="modal-content" onclick="event.stopPropagation()">
-    <div class="modal-header"><button class="close-modal" onclick="closeModal()">×</button>
-     <div class="modal-image-container"><img src="placeholder" alt="placeholder" id="modalImage">
+  </section><!-- Mission & Vision Section -->
+  <section id="mission-vision" class="w-full">
+   <div class="mission-vision-container">
+    <div class="mission-vision-grid"><!-- Mission Card -->
+     <div class="mission-card">
+      <div class="card-icon">
+       <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+       </svg>
+      </div>
+      <h3 class="card-title" id="mission-title">Our Mission</h3>
+      <p class="card-text" id="mission-text">To provide quality education that empowers students with knowledge, skills, and values needed to become responsible citizens and future leaders of our nation</p>
+     </div><!-- Vision Card -->
+     <div class="vision-card">
+      <div class="card-icon">
+       <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z" />
+       </svg>
+      </div>
+      <h3 class="card-title" id="vision-title">Our Vision</h3>
+      <p class="card-text" id="vision-text">To be recognized as a center of academic excellence that nurtures globally competitive graduates who are committed to lifelong learning and positive social change</p>
      </div>
-     <h2 class="modal-faculty-name" id="modalName"></h2>
-     <p class="modal-faculty-position" id="modalPosition"></p>
+    </div>
+   </div>
+  </section><!-- Values Section -->
+  <section id="values-section" class="w-full">
+   <div class="values-container">
+    <h3 id="values-title">Our Core Values</h3>
+    <div class="values-grid"><!-- Value 1 -->
+     <div class="value-card"><span class="value-emoji">🎓</span>
+      <h4 class="value-title" id="value1-title">Excellence</h4>
+      <p class="value-description" id="value1-description">Striving for the highest standards in academics and character</p>
+     </div><!-- Value 2 -->
+     <div class="value-card"><span class="value-emoji">🤝</span>
+      <h4 class="value-title" id="value2-title">Integrity</h4>
+      <p class="value-description" id="value2-description">Upholding honesty, accountability, and ethical behavior</p>
+     </div><!-- Value 3 -->
+     <div class="value-card"><span class="value-emoji">💡</span>
+      <h4 class="value-title" id="value3-title">Innovation</h4>
+      <p class="value-description" id="value3-description">Embracing creativity and forward-thinking approaches</p>
+     </div><!-- Value 4 -->
+     <div class="value-card"><span class="value-emoji">❤️</span>
+      <h4 class="value-title" id="value4-title">Compassion</h4>
+      <p class="value-description" id="value4-description">Showing empathy and respect for all members of our community</p>
+     </div>
+    </div>
+   </div>
+  </section><!-- Faculty Section -->
+  <section id="faculty-section" class="w-full">
+   <div class="faculty-container">
+    <h3 id="faculty-title">Meet Our Faculty</h3>
+    <div class="faculty-grid" id="faculty-grid"><!-- Faculty cards will be generated by JavaScript -->
+    </div>
+   </div>
+  </section><!-- Faculty Modal -->
+  <div class="modal-overlay" id="faculty-modal">
+   <div class="modal-content"><button class="modal-close-btn" onclick="closeFacultyModal()">
+     <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+     </svg></button>
+    <div class="modal-header">
+     <div class="modal-avatar" id="modal-avatar"><img id="modal-avatar-img" src="" alt="Faculty member" onerror="this.style.display='none';">
+     </div>
+     <h4 class="modal-name" id="modal-name"></h4>
+     <p class="modal-position" id="modal-position"></p>
+     <p class="modal-department" id="modal-department"></p>
     </div>
     <div class="modal-body">
      <div class="modal-section">
-      <h3>📋 Department</h3>
-      <p id="modalDepartment"></p>
-     </div>
-     <div class="modal-section">
-      <h3>🎓 Education</h3>
-      <p id="modalEducation"></p>
-     </div>
-     <div class="modal-section">
-      <h3>💼 Experience</h3>
-      <p id="modalExperience"></p>
-     </div>
-     <div class="modal-section">
-      <h3>🏅 Specializations</h3>
-      <ul id="modalSpecializations"></ul>
-     </div>
-     <div class="modal-section">
-      <h3>📞 Contact Information</h3>
-      <div class="contact-info">
-       <p id="modalEmail"></p>
-       <p id="modalPhone"></p>
-       <p id="modalOffice"></p>
+      <div class="modal-section-title">
+       <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
+       </svg> Background
       </div>
+      <p class="modal-section-text" id="modal-background"></p>
+     </div>
+     <div class="modal-section">
+      <div class="modal-section-title">
+       <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12,3L1,9L12,15L21,10.09V17H23V9M5,13.18V17.18L12,21L19,17.18V13.18L12,17L5,13.18Z" />
+       </svg> Education
+      </div>
+      <p class="modal-section-text" id="modal-education"></p>
+     </div>
+     <div class="modal-section">
+      <div class="modal-section-title">
+       <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20,18H4V8H20M20,6H12L10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6Z" />
+       </svg> Specialization
+      </div>
+      <p class="modal-section-text" id="modal-specialization"></p>
+     </div>
+     <div class="modal-section">
+      <div class="modal-section-title">
+       <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.5,11H19V7C19,5.89 18.1,5 17,5H13V3.5A2.5,2.5 0 0,0 10.5,1A2.5,2.5 0 0,0 8,3.5V5H4A2,2 0 0,0 2,7V10.8H3.5C5,10.8 6.2,12 6.2,13.5C6.2,15 5,16.2 3.5,16.2H2V20A2,2 0 0,0 4,22H7.8V20.5C7.8,19 9,17.8 10.5,17.8C12,17.8 13.2,19 13.2,20.5V22H17A2,2 0 0,0 19,20V16H20.5A2.5,2.5 0 0,0 23,13.5A2.5,2.5 0 0,0 20.5,11Z" />
+       </svg> Experience
+      </div>
+      <p class="modal-section-text" id="modal-experience"></p>
      </div>
     </div>
    </div>
-  </div>
-  <footer id="contact" class="w-full">
-   <div class="footer-container"><!-- Contact Info Grid -->
-    <div class="contact-grid"><!-- Address -->
-     <div class="contact-item">
-      <div class="contact-icon">
-       📍
-      </div>
-      <h4 class="contact-heading">Address</h4>
-      <p id="contact-address" class="contact-text">123 Education Street, Learning City, LC 12345</p>
-     </div><!-- Phone -->
-     <div class="contact-item">
-      <div class="contact-icon">
-       📞
-      </div>
-      <h4 class="contact-heading">Phone</h4>
-      <p id="contact-phone" class="contact-text">(555) 123-4567</p>
-     </div><!-- Email -->
-     <div class="contact-item">
-      <div class="contact-icon">
-       ✉️
-      </div>
-      <h4 class="contact-heading">Email</h4>
-      <p id="contact-email" class="contact-text">info@urs-shs.edu</p>
-     </div>
-    </div><!-- Footer Links -->
+  </div><!-- Footer -->
+  <footer id="footer" class="w-full">
+   <div class="footer-container"><!-- Footer Links -->
     <div class="footer-links-grid"><!-- Quick Links -->
      <div>
       <h5 class="footer-column-title">Quick Links</h5>
-      <div class="footer-links"><a href="#home" class="footer-link">Home</a> <a href="#about" class="footer-link">About Us</a> <a href="#programs" class="footer-link">Programs</a> <a href="#faq" class="footer-link">FAQ</a>
+      <div class="footer-links"><a href="#" class="footer-link">Home</a> <a href="#" class="footer-link">About Us</a> <a href="#" class="footer-link">Programs</a> <a href="#" class="footer-link">FAQ</a>
       </div>
      </div><!-- Admissions -->
      <div>
@@ -845,309 +767,347 @@
    </div>
   </footer>
   <script>
-    const defaultConfig = {
-      page_title: "About Us",
-      history_title: "Our History",
-      mission_title: "Our Mission",
-      vision_title: "Our Vision",
-      goals_title: "Our Goals",
-      faculty_title: "Meet Our Faculty",
-      background_color: "#ffffff",
-      primary_color: "#1e40af",
-      accent_color: "#d4af37",
-      text_color: "#333333",
-      surface_color: "#f8f9fa"
-    };
-
-    const facultyData = [
+    // Faculty data
+    const facultyMembers = [
       {
+        id: 1,
         name: "Dr. Maria Santos",
         position: "Principal",
-        department: "Administration",
-        education: "Ph.D. in Educational Leadership, State University",
-        experience: "25 years in education, 10 years as principal",
-        specializations: ["Educational Leadership", "Curriculum Development", "School Administration"],
-        email: "maria.santos@school.edu",
-        phone: "(555) 123-4567",
-        office: "Main Building, Room 101"
+        department: "School Administration",
+        image: "",
+        background: "Dr. Maria Santos has been leading URS Senior Highschool for over 10 years, bringing innovative educational practices and fostering a culture of excellence.",
+        education: "Ph.D. in Educational Leadership, University of the Philippines; M.A. in Education Management",
+        specialization: "Educational Leadership, Curriculum Development, School Administration",
+        experience: "15+ years in educational administration, former Department Head, published researcher in educational policy"
       },
       {
-        name: "Prof. John Mitchell",
-        position: "Department Head",
-        department: "Mathematics",
-        education: "M.S. in Mathematics, National University",
-        experience: "18 years teaching experience",
-        specializations: ["Calculus", "Statistics", "Mathematical Analysis"],
-        email: "john.mitchell@school.edu",
-        phone: "(555) 123-4568",
-        office: "Math Building, Room 205"
+        id: 2,
+        name: "Prof. Juan dela Cruz",
+        position: "STEM Department Head",
+        department: "Science, Technology, Engineering & Mathematics",
+        image: "",
+        background: "Professor dela Cruz is passionate about inspiring students to pursue careers in STEM fields through hands-on learning and real-world applications.",
+        education: "Master of Science in Physics, Ateneo de Manila University; B.S. in Applied Physics",
+        specialization: "Physics, Mathematics, Research Methodology, STEM Education",
+        experience: "12 years teaching experience, 5 national science fair awards, curriculum developer for K-12 STEM program"
       },
       {
-        name: "Dr. Sarah Chen",
-        position: "Senior Teacher",
-        department: "Science",
-        education: "Ph.D. in Biology, Research Institute",
-        experience: "15 years in secondary education",
-        specializations: ["Biology", "Environmental Science", "Research Methods"],
-        email: "sarah.chen@school.edu",
-        phone: "(555) 123-4569",
-        office: "Science Lab Building, Room 302"
+        id: 3,
+        name: "Ms. Ana Reyes",
+        position: "Humanities Teacher",
+        department: "Humanities & Social Sciences",
+        image: "",
+        background: "Ms. Reyes brings literature and history to life through creative teaching methods and interactive classroom discussions.",
+        education: "M.A. in Literature, University of Santo Tomas; B.A. in English Language",
+        specialization: "Philippine Literature, World History, Creative Writing, Social Studies",
+        experience: "10 years teaching experience, published author, workshop facilitator for creative writing"
       },
       {
-        name: "Mr. David Rodriguez",
-        position: "Teacher",
-        department: "English & Literature",
-        education: "M.A. in English Literature, State College",
-        experience: "12 years teaching experience",
-        specializations: ["Creative Writing", "Literature Analysis", "Public Speaking"],
-        email: "david.rodriguez@school.edu",
-        phone: "(555) 123-4570",
-        office: "Liberal Arts Building, Room 108"
+        id: 4,
+        name: "Mr. Carlos Martinez",
+        position: "ABM Coordinator",
+        department: "Accountancy, Business & Management",
+        image: "",
+        background: "Mr. Martinez combines academic excellence with practical business experience to prepare students for the corporate world.",
+        education: "MBA in Business Management, Asian Institute of Management; CPA, B.S. in Accountancy",
+        specialization: "Business Management, Accounting, Entrepreneurship, Financial Literacy",
+        experience: "8 years teaching, 5 years corporate experience in finance, certified business coach"
       },
       {
-        name: "Ms. Emily Thompson",
-        position: "Teacher",
-        department: "Social Studies",
-        education: "M.A. in History, Central University",
-        experience: "10 years teaching experience",
-        specializations: ["World History", "Philippine History", "Civic Education"],
-        email: "emily.thompson@school.edu",
-        phone: "(555) 123-4571",
-        office: "Social Studies Building, Room 210"
+        id: 5,
+        name: "Ms. Sofia Gonzales",
+        position: "Arts Teacher",
+        department: "Arts & Design",
+        image: "",
+        background: "Ms. Gonzales nurtures creativity and artistic expression while teaching both traditional and digital art techniques.",
+        education: "M.F.A. in Visual Arts, University of the Philippines; B.F.A. in Painting",
+        specialization: "Visual Arts, Digital Design, Art History, Creative Expression",
+        experience: "9 years teaching experience, award-winning visual artist, curator of student exhibitions"
       },
       {
-        name: "Prof. Robert Kim",
-        position: "Department Head",
-        department: "Physical Education",
-        education: "M.S. in Sports Science, Athletic Institute",
-        experience: "20 years in physical education",
-        specializations: ["Athletic Training", "Sports Management", "Health & Wellness"],
-        email: "robert.kim@school.edu",
-        phone: "(555) 123-4572",
-        office: "Sports Complex, Room 115"
+        id: 6,
+        name: "Coach Roberto Diaz",
+        position: "Physical Education Head",
+        department: "Sports & Wellness",
+        image: "",
+        background: "Coach Diaz promotes physical fitness, sportsmanship, and healthy lifestyle choices through comprehensive PE programs.",
+        education: "M.S. in Sports Science, Philippine Sports Commission; B.S. in Physical Education",
+        specialization: "Physical Education, Sports Coaching, Health & Wellness, Team Sports",
+        experience: "11 years coaching experience, former professional athlete, certified fitness trainer"
+      },
+      {
+        id: 7,
+        name: "Ms. Teresa Aquino",
+        position: "Guidance Counselor",
+        department: "Student Services",
+        image: "",
+        background: "Ms. Aquino provides compassionate support and guidance to help students navigate academic and personal challenges.",
+        education: "M.A. in Guidance and Counseling, De La Salle University; Licensed Guidance Counselor",
+        specialization: "Career Counseling, Mental Health Support, Student Development, Crisis Intervention",
+        experience: "8 years as school counselor, trained in adolescent psychology, certified career coach"
+      },
+      {
+        id: 8,
+        name: "Mr. David Lim",
+        position: "ICT Coordinator",
+        department: "Information Technology",
+        image: "",
+        background: "Mr. Lim equips students with essential digital skills and programming knowledge for the 21st century workplace.",
+        education: "M.S. in Information Technology, Mapua University; B.S. in Computer Science",
+        specialization: "Programming, Web Development, Digital Literacy, Computer Systems",
+        experience: "7 years teaching, 4 years software development experience, certified IT instructor"
       }
     ];
 
-    function toggleSection(sectionId) {
-      const content = document.getElementById(`${sectionId}-content`);
-      const toggle = document.getElementById(`${sectionId}-toggle`);
+    // Hamburger menu toggle
+    function toggleMenu() {
+      const mobileMenu = document.getElementById('mobile-menu');
+      const menuOverlay = document.getElementById('menu-overlay');
+      const hamburgerLines = document.querySelectorAll('.hamburger-line');
       
-      content.classList.toggle('expanded');
-      toggle.classList.toggle('rotated');
+      if (mobileMenu.style.right === '0px') {
+        mobileMenu.style.right = '-100%';
+        menuOverlay.style.display = 'none';
+        hamburgerLines[0].style.transform = 'none';
+        hamburgerLines[1].style.opacity = '1';
+        hamburgerLines[2].style.transform = 'none';
+      } else {
+        mobileMenu.style.right = '0px';
+        menuOverlay.style.display = 'block';
+        hamburgerLines[0].style.transform = 'rotate(45deg) translate(8px, 8px)';
+        hamburgerLines[1].style.opacity = '0';
+        hamburgerLines[2].style.transform = 'rotate(-45deg) translate(8px, -8px)';
+      }
     }
 
-    function renderFaculty() {
-      const grid = document.getElementById('facultyGrid');
-      grid.innerHTML = '';
-      
-      facultyData.forEach((faculty, index) => {
+    // Render faculty cards
+    function renderFacultyCards() {
+      const facultyGrid = document.getElementById('faculty-grid');
+      facultyGrid.innerHTML = '';
+
+      facultyMembers.forEach(faculty => {
         const card = document.createElement('div');
         card.className = 'faculty-card';
-        card.onclick = () => openModal(index);
+        card.onclick = () => openFacultyModal(faculty);
         
         card.innerHTML = `
-          <div class="faculty-image-container">
-            <img src="placeholder" alt="placeholder" onerror="this.src=''; this.alt='Image failed to load'; this.style.display='none';">
+          <div class="faculty-avatar">
+            <img src="${faculty.image}" alt="${faculty.name}" onerror="this.style.display='none';">
           </div>
-          <div class="faculty-info">
-            <div class="faculty-name">${faculty.name}</div>
-            <div class="faculty-position">${faculty.position}</div>
-            <div class="faculty-department">${faculty.department}</div>
-          </div>
+          <h4 class="faculty-name">${faculty.name}</h4>
+          <p class="faculty-position">${faculty.position}</p>
+          <p class="faculty-department">${faculty.department}</p>
         `;
         
-        grid.appendChild(card);
+        facultyGrid.appendChild(card);
       });
     }
 
-    function openModal(index) {
-      const faculty = facultyData[index];
-      const modal = document.getElementById('modalOverlay');
+    // Open faculty modal
+    function openFacultyModal(faculty) {
+      const modalAvatarImg = document.getElementById('modal-avatar-img');
+      modalAvatarImg.src = faculty.image;
+      modalAvatarImg.alt = faculty.name;
       
-      document.getElementById('modalImage').src = 'placeholder';
-      document.getElementById('modalImage').alt = 'placeholder';
-      document.getElementById('modalName').textContent = faculty.name;
-      document.getElementById('modalPosition').textContent = faculty.position;
-      document.getElementById('modalDepartment').textContent = faculty.department;
-      document.getElementById('modalEducation').textContent = faculty.education;
-      document.getElementById('modalExperience').textContent = faculty.experience;
+      document.getElementById('modal-name').textContent = faculty.name;
+      document.getElementById('modal-position').textContent = faculty.position;
+      document.getElementById('modal-department').textContent = faculty.department;
+      document.getElementById('modal-background').textContent = faculty.background;
+      document.getElementById('modal-education').textContent = faculty.education;
+      document.getElementById('modal-specialization').textContent = faculty.specialization;
+      document.getElementById('modal-experience').textContent = faculty.experience;
       
-      const specList = document.getElementById('modalSpecializations');
-      specList.innerHTML = '';
-      faculty.specializations.forEach(spec => {
-        const li = document.createElement('li');
-        li.textContent = spec;
-        specList.appendChild(li);
-      });
-      
-      document.getElementById('modalEmail').innerHTML = `✉️ <strong>Email:</strong> ${faculty.email}`;
-      document.getElementById('modalPhone').innerHTML = `📱 <strong>Phone:</strong> ${faculty.phone}`;
-      document.getElementById('modalOffice').innerHTML = `🏢 <strong>Office:</strong> ${faculty.office}`;
-      
-      modal.classList.add('active');
+      document.getElementById('faculty-modal').classList.add('show');
       document.body.style.overflow = 'hidden';
     }
 
-    function closeModal() {
-      const modal = document.getElementById('modalOverlay');
-      modal.classList.remove('active');
+    // Close faculty modal
+    function closeFacultyModal() {
+      document.getElementById('faculty-modal').classList.remove('show');
       document.body.style.overflow = 'auto';
     }
 
-    function closeModalOnOverlay(event) {
-      if (event.target.id === 'modalOverlay') {
-        closeModal();
+    // Close modal when clicking overlay
+    document.getElementById('faculty-modal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeFacultyModal();
       }
-    }
+    });
+
+    // Initialize faculty cards on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      renderFacultyCards();
+    });
+
+    const defaultConfig = {
+      background_color: "#ffffff",
+      secondary_color: "#f8fafc",
+      text_color: "#1e293b",
+      primary_action_color: "#1e40af",
+      secondary_action_color: "#d4af37",
+      font_family: "system-ui, -apple-system, sans-serif",
+      font_size: 16,
+      school_name: "URS Senior Highschool",
+      page_title: "About Our School",
+      page_subtitle: "Building tomorrow's leaders through excellence in education, innovation, and character development",
+      mission_title: "Our Mission",
+      mission_text: "To provide quality education that empowers students with knowledge, skills, and values needed to become responsible citizens and future leaders of our nation",
+      vision_title: "Our Vision",
+      vision_text: "To be recognized as a center of academic excellence that nurtures globally competitive graduates who are committed to lifelong learning and positive social change",
+      values_title: "Our Core Values",
+      value1_title: "Excellence",
+      value1_description: "Striving for the highest standards in academics and character",
+      value2_title: "Integrity",
+      value2_description: "Upholding honesty, accountability, and ethical behavior",
+      value3_title: "Innovation",
+      value3_description: "Embracing creativity and forward-thinking approaches",
+      value4_title: "Compassion",
+      value4_description: "Showing empathy and respect for all members of our community"
+    };
 
     async function onConfigChange(config) {
-      document.getElementById('pageTitle').textContent = config.page_title || defaultConfig.page_title;
-      document.getElementById('historyTitle').innerHTML = `<span class="section-icon">📚</span>${config.history_title || defaultConfig.history_title}`;
-      document.getElementById('mvgTitle').innerHTML = `<span class="section-icon">���</span>Mission, Vision & Goals`;
-      document.getElementById('missionTitle').innerHTML = `🎓 ${config.mission_title || defaultConfig.mission_title}`;
-      document.getElementById('visionTitle').innerHTML = `�� ${config.vision_title || defaultConfig.vision_title}`;
-      document.getElementById('goalsTitle').innerHTML = `🏆 ${config.goals_title || defaultConfig.goals_title}`;
-      document.getElementById('facultyTitle').textContent = config.faculty_title || defaultConfig.faculty_title;
+      const baseFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = 'system-ui, -apple-system, sans-serif';
+      const customFont = `${baseFont}, ${baseFontStack}`;
+      const baseSize = config.font_size || defaultConfig.font_size;
 
       // Apply colors
-      const primaryColor = config.primary_color || defaultConfig.primary_color;
-      const accentColor = config.accent_color || defaultConfig.accent_color;
-      const backgroundColor = config.background_color || defaultConfig.background_color;
-      const textColor = config.text_color || defaultConfig.text_color;
-      const surfaceColor = config.surface_color || defaultConfig.surface_color;
+      const nav = document.getElementById('main-nav');
+      nav.style.backgroundColor = config.primary_action_color || defaultConfig.primary_action_color;
 
-      document.body.style.background = backgroundColor;
-      document.body.style.color = primaryColor;
-      
-      document.querySelectorAll('.page-title, .faculty-name, .modal-faculty-name, .mvg-item h3, .modal-section h3, .section-title').forEach(el => {
-        el.style.color = primaryColor;
-      });
-      
-      document.querySelectorAll('.faculty-position, .modal-faculty-position, .toggle-icon, .mvg-item').forEach(el => {
-        el.style.color = accentColor;
-        if (el.classList.contains('mvg-item')) {
-          el.style.borderLeftColor = accentColor;
-        }
-      });
+      const mobileMenu = document.getElementById('mobile-menu');
+      mobileMenu.style.backgroundColor = config.background_color || defaultConfig.background_color;
 
-      document.querySelectorAll('.section-content p, .modal-section p, .modal-section ul, .modal-section li').forEach(el => {
-        el.style.color = textColor;
-      });
+      const heroSection = document.getElementById('hero');
+      heroSection.style.backgroundColor = config.background_color || defaultConfig.background_color;
+
+      const missionVision = document.getElementById('mission-vision');
+      missionVision.style.backgroundColor = config.secondary_color || defaultConfig.secondary_color;
+
+      const valuesSection = document.getElementById('values-section');
+      valuesSection.style.backgroundColor = config.background_color || defaultConfig.background_color;
+
+      const footer = document.getElementById('footer');
+      footer.style.backgroundColor = config.primary_action_color || defaultConfig.primary_action_color;
+
+      // Apply fonts and sizes
+      document.getElementById('school-name').style.fontFamily = customFont;
+      document.getElementById('school-name').style.fontSize = `${baseSize * 1.5}px`;
+      
+      document.getElementById('page-title').style.fontFamily = customFont;
+      document.getElementById('page-title').style.fontSize = `${baseSize * 3.5}px`;
+      
+      document.getElementById('page-subtitle').style.fontFamily = customFont;
+      document.getElementById('page-subtitle').style.fontSize = `${baseSize * 1.25}px`;
+
+      document.getElementById('mission-title').style.fontFamily = customFont;
+      document.getElementById('mission-title').style.fontSize = `${baseSize * 1.75}px`;
+
+      document.getElementById('vision-title').style.fontFamily = customFont;
+      document.getElementById('vision-title').style.fontSize = `${baseSize * 1.75}px`;
+
+      document.getElementById('values-title').style.fontFamily = customFont;
+      document.getElementById('values-title').style.fontSize = `${baseSize * 2.5}px`;
+
+      // Apply text content
+      document.getElementById('school-name').textContent = config.school_name || defaultConfig.school_name;
+      document.getElementById('page-title').textContent = config.page_title || defaultConfig.page_title;
+      document.getElementById('page-subtitle').textContent = config.page_subtitle || defaultConfig.page_subtitle;
+      
+      document.getElementById('mission-title').textContent = config.mission_title || defaultConfig.mission_title;
+      document.getElementById('mission-text').textContent = config.mission_text || defaultConfig.mission_text;
+      document.getElementById('vision-title').textContent = config.vision_title || defaultConfig.vision_title;
+      document.getElementById('vision-text').textContent = config.vision_text || defaultConfig.vision_text;
+      
+      document.getElementById('values-title').textContent = config.values_title || defaultConfig.values_title;
+      document.getElementById('value1-title').textContent = config.value1_title || defaultConfig.value1_title;
+      document.getElementById('value1-description').textContent = config.value1_description || defaultConfig.value1_description;
+      document.getElementById('value2-title').textContent = config.value2_title || defaultConfig.value2_title;
+      document.getElementById('value2-description').textContent = config.value2_description || defaultConfig.value2_description;
+      document.getElementById('value3-title').textContent = config.value3_title || defaultConfig.value3_title;
+      document.getElementById('value3-description').textContent = config.value3_description || defaultConfig.value3_description;
+      document.getElementById('value4-title').textContent = config.value4_title || defaultConfig.value4_title;
+      document.getElementById('value4-description').textContent = config.value4_description || defaultConfig.value4_description;
     }
 
-    function mapToCapabilities(config) {
-      return {
-        recolorables: [
-          {
-            get: () => config.background_color || defaultConfig.background_color,
-            set: (value) => {
-              if (window.elementSdk) {
-                window.elementSdk.config.background_color = value;
-                window.elementSdk.setConfig({ background_color: value });
-              }
-            }
-          },
-          {
-            get: () => config.surface_color || defaultConfig.surface_color,
-            set: (value) => {
-              if (window.elementSdk) {
-                window.elementSdk.config.surface_color = value;
-                window.elementSdk.setConfig({ surface_color: value });
-              }
-            }
-          },
-          {
-            get: () => config.text_color || defaultConfig.text_color,
-            set: (value) => {
-              if (window.elementSdk) {
-                window.elementSdk.config.text_color = value;
-                window.elementSdk.setConfig({ text_color: value });
-              }
-            }
-          },
-          {
-            get: () => config.primary_color || defaultConfig.primary_color,
-            set: (value) => {
-              if (window.elementSdk) {
-                window.elementSdk.config.primary_color = value;
-                window.elementSdk.setConfig({ primary_color: value });
-              }
-            }
-          },
-          {
-            get: () => config.accent_color || defaultConfig.accent_color,
-            set: (value) => {
-              if (window.elementSdk) {
-                window.elementSdk.config.accent_color = value;
-                window.elementSdk.setConfig({ accent_color: value });
-              }
-            }
-          }
-        ],
-        borderables: [],
-        fontEditable: undefined,
-        fontSizeable: undefined
-      };
-    }
-
-    function mapToEditPanelValues(config) {
-      return new Map([
-        ["page_title", config.page_title || defaultConfig.page_title],
-        ["history_title", config.history_title || defaultConfig.history_title],
-        ["mission_title", config.mission_title || defaultConfig.mission_title],
-        ["vision_title", config.vision_title || defaultConfig.vision_title],
-        ["goals_title", config.goals_title || defaultConfig.goals_title],
-        ["faculty_title", config.faculty_title || defaultConfig.faculty_title]
-      ]);
-    }
-
-    // Navigation functions
-    function toggleNav() {
-      const navMenu = document.getElementById('navMenu');
-      const navOverlay = document.getElementById('navOverlay');
-      const hamburger = document.getElementById('hamburger');
-      
-      navMenu.classList.toggle('active');
-      navOverlay.classList.toggle('active');
-      hamburger.classList.toggle('active');
-      
-      if (navMenu.classList.contains('active')) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = 'auto';
-      }
-    }
-
-    function closeNav() {
-      const navMenu = document.getElementById('navMenu');
-      const navOverlay = document.getElementById('navOverlay');
-      const hamburger = document.getElementById('hamburger');
-      
-      navMenu.classList.remove('active');
-      navOverlay.classList.remove('active');
-      hamburger.classList.remove('active');
-      document.body.style.overflow = 'auto';
-    }
-
-    // Initialize
-    renderFaculty();
-    
     if (window.elementSdk) {
       window.elementSdk.init({
         defaultConfig,
         onConfigChange,
-        mapToCapabilities,
-        mapToEditPanelValues
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_color || defaultConfig.secondary_color,
+              set: (value) => {
+                config.secondary_color = value;
+                window.elementSdk.setConfig({ secondary_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.primary_action_color || defaultConfig.primary_action_color,
+              set: (value) => {
+                config.primary_action_color = value;
+                window.elementSdk.setConfig({ primary_action_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+              set: (value) => {
+                config.secondary_action_color = value;
+                window.elementSdk.setConfig({ secondary_action_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => {
+              config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => {
+              config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["school_name", config.school_name || defaultConfig.school_name],
+          ["page_title", config.page_title || defaultConfig.page_title],
+          ["page_subtitle", config.page_subtitle || defaultConfig.page_subtitle],
+          ["mission_title", config.mission_title || defaultConfig.mission_title],
+          ["mission_text", config.mission_text || defaultConfig.mission_text],
+          ["vision_title", config.vision_title || defaultConfig.vision_title],
+          ["vision_text", config.vision_text || defaultConfig.vision_text],
+          ["values_title", config.values_title || defaultConfig.values_title],
+          ["value1_title", config.value1_title || defaultConfig.value1_title],
+          ["value1_description", config.value1_description || defaultConfig.value1_description],
+          ["value2_title", config.value2_title || defaultConfig.value2_title],
+          ["value2_description", config.value2_description || defaultConfig.value2_description],
+          ["value3_title", config.value3_title || defaultConfig.value3_title],
+          ["value3_description", config.value3_description || defaultConfig.value3_description],
+          ["value4_title", config.value4_title || defaultConfig.value4_title],
+          ["value4_description", config.value4_description || defaultConfig.value4_description]
+        ])
       });
     }
-
-    // Keyboard accessibility for modal and navigation
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        closeModal();
-        closeNav();
-      }
-    });
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a3f4c33b50ee6a6',t:'MTc2NDA1NDMyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a4f423231b65783',t:'MTc2NDIyMTY4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
