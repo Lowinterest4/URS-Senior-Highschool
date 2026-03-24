@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>URSM Library - Members Only</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+  body { font-family: Arial, sans-serif; margin:0; background:#f5f5f5; }
+  #auth-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+                background:rgba(0,0,0,0.5); z-index:2000; display:flex; align-items:center; justify-content:center; }
+  #auth-box { background:white; padding:2rem; border-radius:10px; width:320px; text-align:center; }
+  input { width:100%; margin:10px 0; padding:10px; box-sizing:border-box; }
+  button { width:100%; padding:10px; margin-top:10px; background:#1e3a8a; color:white; border:none; cursor:pointer; }
+  .header { display:flex; justify-content:space-between; padding:1rem; background:#1e3a8a; color:white; }
+  #content { display:none; padding:1rem; }
+</style>
+</head>
+
+<body>
+<div class="header">
+  <span id="user-info">Not logged in</span>
+  <button id="logout-btn" style="display:none;">Logout</button>
+</div>
+
+<div id="content">
+  <h1>Members-Only Content</h1>
+  <p>Only logged-in users can see this page.</p>
+</div>
+
+<!-- AUTH MODAL -->
+<div id="auth-modal">
+  <div id="auth-box">
+    <h2 id="auth-title">Sign In</h2>
+    <input id="display_name" type="text" placeholder="Full Name" style="display:none;">
+    <input id="student_number" type="text" placeholder="Student Number">
+    <input id="phone" type="tel" placeholder="Phone Number" style="display:none;">
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Password">
+    <button id="auth-submit">Submit</button>
+    <p><span id="toggle-text">No account?</span> <a href="#" id="toggle-link">Sign Up</a></p>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = "https://emakckalouwopodqehgn.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtYWtja2Fsb3V3b3BvZHFlaGduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzA3OTYsImV4cCI6MjA4MTE0Njc5Nn0.eRQMLCrL4xEb58ap8RKTOyJx8pusfbr8Ut037GpYXfk";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let isLogin = true;
+
+// Elements
+const authModal = document.getElementById("auth-modal");
+const toggleLink = document.getElementById("toggle-link");
+const submitBtn = document.getElementById("auth-submit");
+const logoutBtn = document.getElementById("logout-btn");
+const userInfo = document.getElementById("user-info");
+const contentDiv = document.getElementById("content");
+
+// Toggle login/signup mode
+function toggleMode() {
+  isLogin = !isLogin;
+  document.getElementById("auth-title").innerText = isLogin ? "Sign In" : "Sign Up";
+  document.getElementById("toggle-text").innerText = isLogin ? "No account?" : "Already have one?";
+  document.getElementById("display_name").style.display = isLogin ? "none" : "block";
+  document.getElementById("phone").style.display = isLogin ? "none" : "block";
+  document.getElementById("student_number").style.display = "block"; // always visible for login
+}
+
+toggleLink.addEventListener("click", (e) => {
+  e.preventDefault();
+  toggleMode();
+});
+
+// Logout
+logoutBtn.addEventListener("click", async () => {
+  await supabaseClient.auth.signOut();
+  location.reload();
+});
+
+function setButtonState(button, state) {
+  if(state === "loading") {
+    button.disabled = true;
+    button.textContent = "Processing...";
+  } else if(state === "error") {
+    button.disabled = false;
+    button.textContent = "Submit";
+  } else if(state === "normal") {
+    button.disabled = false;
+    button.textContent = "Submit";
+  }
+}
+// Submit auth
+submitBtn.addEventListener("click", async () => {
+  setButtonState(submitBtn, "loading"); // show processing
+
+  try {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    let student_number_input = document.getElementById("student_number").value.trim();
+
+    // Must start with M
+    if (!student_number_input.toLowerCase().startsWith('m')) {
+      alert("Student number is wrong/missing");
+      setButtonState(submitBtn, "error");
+      return;
+    }
+
+    student_number_input = student_number_input.replace(/^m/i, ''); // strip M
+
+    if (isLogin) {
+      // LOGIN
+      const { data: loginData, error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if(loginError){ alert(loginError.message); setButtonState(submitBtn, "error"); return; }
+
+      const { data: { session } } = await supabaseClient.auth.getSession();
+      if(!session || !session.user){ alert("Login failed."); setButtonState(submitBtn, "error"); return; }
+
+      const userId = session.user.id;
+
+      const { data: profiles, error: profileError } = await supabaseClient.from('profiles').select('*').eq('user_id', userId);
+      if(profileError || !profiles || profiles.length === 0){
+        await supabaseClient.auth.signOut();
+        alert(profileError?.message || "Profile not found");
+        setButtonState(submitBtn, "error");
+        return;
+      }
+
+      const profile = profiles[0];
+      const storedNumber = profile.student_number.replace(/^m/i, '');
+      if(storedNumber !== student_number_input){
+        await supabaseClient.auth.signOut();
+        authModal.style.display = "flex";
+        contentDiv.style.display = "none";
+        userInfo.textContent = "Not logged in";
+        logoutBtn.style.display = "none";
+        alert("Incorrect student number");
+        setButtonState(submitBtn, "error");
+        return;
+      }
+
+      await loadUser(userId);
+
+    } else {
+      // SIGNUP
+      const display_name = document.getElementById("display_name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const student_number = student_number_input;
+
+      const { data, error } = await supabaseClient.auth.signUp({
+        email, password,
+        options: { data: { display_name, phone, student_number } }
+      });
+      if(error){ alert(error.message); setButtonState(submitBtn, "error"); return; }
+
+      const userId = data.user.id;
+
+      alert("Account created! Please check your email to confirm.");
+    }
+
+    setButtonState(submitBtn, "normal"); // reset button
+  } catch(err) {
+    console.error(err);
+    alert("An unexpected error occurred.");
+    setButtonState(submitBtn, "error");
+  }
+});
+
+// Load user profile
+async function loadUser(userId) {
+  const { data, error } = await supabaseClient
+    .from('profiles')
+    .select('*')
+    .eq('user_id', userId);
+
+  if(error){ console.error(error.message); return; }
+  if(!data || data.length === 0){ console.warn("No profile found"); return; }
+
+  const profile = data[0];
+  userInfo.textContent = `${profile.display_name} (${profile.student_number.replace(/^m/i,'')})`; // hide M
+  logoutBtn.style.display = "inline-block";
+  authModal.style.display = "none";
+  contentDiv.style.display = "block";
+}
+
+// On page load: check session
+(async () => {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if(session && session.user){
+    await loadUser(session.user.id);
+  } else {
+    authModal.style.display = "flex";
+    contentDiv.style.display = "none";
+  }
+})();
+
+// Listen for auth changes
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if(session && session.user){
+    loadUser(session.user.id);
+  } else {
+    authModal.style.display = "flex";
+    contentDiv.style.display = "none";
+    userInfo.textContent = "Not logged in";
+    logoutBtn.style.display = "none";
+  }
+});
+</script>
+</body>
+</html>
