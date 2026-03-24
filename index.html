@@ -28,6 +28,17 @@
 <div id="content">
   <h1>Members-Only Content</h1>
   <p>Only logged-in users can see this page.</p>
+  <hr>
+<h2>Account Settings</h2>
+
+<input id="new-username" type="text" placeholder="New Username">
+<button id="change-username-btn">Change Username</button>
+
+<input id="new-email" type="email" placeholder="New Email">
+<button id="change-email-btn">Change Email</button>
+
+<input id="new-password" type="password" placeholder="New Password">
+<button id="change-password-btn">Change Password</button>
 </div>
 
 <!-- AUTH MODAL -->
@@ -94,7 +105,7 @@ function setButtonState(button, state) {
 }
 // Submit auth
 submitBtn.addEventListener("click", async () => {
-  setButtonState(submitBtn, "loading"); // show processing
+  setButtonState(submitBtn, "loading");
 
   try {
     const email = document.getElementById("email").value.trim();
@@ -111,40 +122,57 @@ submitBtn.addEventListener("click", async () => {
     student_number_input = student_number_input.replace(/^m/i, ''); // strip M
 
     if (isLogin) {
-      // LOGIN
-      const { data: loginData, error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
-      if(loginError){ alert(loginError.message); setButtonState(submitBtn, "error"); return; }
+  // LOGIN FIRST (required to get user_id)
+  const { data: loginData, error: loginError } = await supabaseClient.auth.signInWithPassword({ email, password });
+  if(loginError){
+    alert(loginError.message);
+    setButtonState(submitBtn, "error");
+    return;
+  }
 
-      const { data: { session } } = await supabaseClient.auth.getSession();
-      if(!session || !session.user){ alert("Login failed."); setButtonState(submitBtn, "error"); return; }
+  const user = loginData?.user;
+  if(!user){
+    alert("Login failed.");
+    setButtonState(submitBtn, "error");
+    return;
+  }
 
-      const userId = session.user.id;
+  // NOW check profile using user_id
+  const { data: profiles, error: profileError } = await supabaseClient
+    .from('profiles')
+    .select('*')
+    .eq('user_id', user.id);
 
-      const { data: profiles, error: profileError } = await supabaseClient.from('profiles').select('*').eq('user_id', userId);
-      if(profileError || !profiles || profiles.length === 0){
-        await supabaseClient.auth.signOut();
-        alert(profileError?.message || "Profile not found");
-        setButtonState(submitBtn, "error");
-        return;
-      }
+  if(profileError || !profiles || profiles.length === 0){
+    await supabaseClient.auth.signOut();
+    alert("Profile not found");
+    setButtonState(submitBtn, "error");
+    return;
+  }
 
-      const profile = profiles[0];
-      const storedNumber = profile.student_number.replace(/^m/i, '');
-      if(storedNumber !== student_number_input){
-        await supabaseClient.auth.signOut();
-        authModal.style.display = "flex";
-        contentDiv.style.display = "none";
-        userInfo.textContent = "Not logged in";
-        logoutBtn.style.display = "none";
-        alert("Incorrect student number");
-        setButtonState(submitBtn, "error");
-        return;
-      }
+  const profile = profiles[0];
+  const storedNumber = profile.student_number.replace(/^m/i, '');
 
-      await loadUser(userId);
+  if(storedNumber !== student_number_input){
+    await supabaseClient.auth.signOut();
+
+    // IMPORTANT: stop UI from updating first
+    authModal.style.display = "flex";
+    contentDiv.style.display = "none";
+    userInfo.textContent = "Not logged in";
+    logoutBtn.style.display = "none";
+
+    alert("Incorrect student number");
+    setButtonState(submitBtn, "error");
+    return;
+  }
+
+  // ✅ Only load user if everything is correct
+  await loadUser(user.id);
+
 
     } else {
-      // SIGNUP
+      // SIGNUP logic stays the same
       const display_name = document.getElementById("display_name").value.trim();
       const phone = document.getElementById("phone").value.trim();
       const student_number = student_number_input;
@@ -155,12 +183,10 @@ submitBtn.addEventListener("click", async () => {
       });
       if(error){ alert(error.message); setButtonState(submitBtn, "error"); return; }
 
-      const userId = data.user.id;
-
       alert("Account created! Please check your email to confirm.");
     }
 
-    setButtonState(submitBtn, "normal"); // reset button
+    setButtonState(submitBtn, "normal");
   } catch(err) {
     console.error(err);
     alert("An unexpected error occurred.");
@@ -206,6 +232,78 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
     userInfo.textContent = "Not logged in";
     logoutBtn.style.display = "none";
   }
+});
+// CHANGE USERNAME
+document.getElementById("change-username-btn").addEventListener("click", async () => {
+  const newUsername = document.getElementById("new-username").value.trim();
+	
+  if (!newUsername) {
+    alert("Enter a valid username");
+    return;
+  }
+
+  const { data: { user } } = await supabaseClient.auth.getUser();
+  if (!user) {
+    alert("Not logged in");
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from("profiles")
+    .update({ display_name: newUsername })
+    .eq("user_id", user.id);
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Username updated!");
+  loadUser(user.id); // refresh UI
+});
+
+
+// CHANGE EMAIL
+document.getElementById("change-email-btn").addEventListener("click", async () => {
+  const newEmail = document.getElementById("new-email").value.trim();
+
+  if (!newEmail) {
+    alert("Enter a valid email");
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.updateUser({
+    email: newEmail
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Email update requested. Check your new email to confirm.");
+});
+
+
+// CHANGE PASSWORD
+document.getElementById("change-password-btn").addEventListener("click", async () => {
+  const newPassword = document.getElementById("new-password").value;
+
+  if (newPassword.length < 6) {
+    alert("Password must be at least 6 characters");
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.updateUser({
+    password: newPassword
+  });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  alert("Password updated successfully!");
 });
 </script>
 </body>
